@@ -7,7 +7,7 @@
 #define SWITCH1 A0
 #define SWITCH2 A1
 #define BANKSWITCH A2
-
+ 
 bool debug = DEBUG;
 
 class Footswitch {
@@ -50,7 +50,7 @@ class Footswitch {
         Serial.print(control);
         Serial.println();
         Serial.print("state: ");
-        Serial.print(state);
+        Serial.print(state ? "on" : "off");
         Serial.println();
       }
     }
@@ -72,6 +72,8 @@ const uint8_t NumSwitches = sizeof(footswitchs) / sizeof(Footswitch);
 
 class BankSwitch {
   public:
+    BankSwitch(uint8_t p) : pin(p) {}
+
     // setup pin
     void setup() {
       pinMode(pin, INPUT_PULLUP);
@@ -88,7 +90,7 @@ class BankSwitch {
     }
     
   private:
-    const uint8_t pin = BANKSWITCH;
+    const uint8_t pin;
     const long debounceTime = DEBOUNCE;
     unsigned long lastFlipped;
     bool flipped = 0;
@@ -113,13 +115,13 @@ class BankSwitch {
         Serial.print(bank);
         Serial.println();
         Serial.print("state: ");
-        Serial.print(state);
+        Serial.print(state ? "on" : "off");
         Serial.println();
       }
     }
 };
 
-BankSwitch bankswitch;
+BankSwitch bankswitch = BANKSWITCH;
 
 void setup() {
   if (debug) {
